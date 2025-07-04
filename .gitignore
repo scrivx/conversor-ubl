@@ -1,0 +1,6 @@
+/config/*.env
+/certs/
+
+# Binarios
+/bin/
+/output/
