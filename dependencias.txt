@@ -1,0 +1,20 @@
+- gin (para api)
+go get -ugithub.com/gin-gonic/gin
+
+- goxmldsig (para firmar xml)
+go get -u github.com/russellhaering/goxmldsig
+
+- validator/v10 (para validar campos)
+go get -u github.com/go-playground/validator/v10
+
+- viper (para cargar configuraciones)
+go get -u github.com/spf13/viper
+
+- testify (para testear)
+go get -u github.com/stretchr/testify/assert
+
+- zerolog (para logs)
+go get -u github.com/rs/zerolog
+
+- air (para compilar)
+go install github.com/air-verse/air@latest 
