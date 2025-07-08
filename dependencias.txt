@@ -18,3 +18,10 @@ go get -u github.com/rs/zerolog
 
 - air (para compilar)
 go install github.com/air-verse/air@latest 
+
+- swagger (para documentar)
+go install github.com/swaggo/swag/cmd/swag@latest
+
+- XSD (para validar XML)
+go get -u github.com/weasel-software/go-xml/cmd/xsdgen
+go install github.com/weasel-software/go-xml/cmd/xsdgen
