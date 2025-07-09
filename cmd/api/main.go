@@ -11,7 +11,7 @@ func main() {
 	r := gin.Default()
 
 	routes.RegisterRoutes(r)
-	
+
 	log.Println("🚀Iniciando servidor en http://localhost:8080")
 	if err := r.Run(":8080"); err != nil {
 		log.Fatal(err)

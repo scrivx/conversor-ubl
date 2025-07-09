@@ -35,9 +35,9 @@ func (m *mockConversor) Convert(req ConvertRequest) (*ConvertResult, error) {
 	}
 
 	return &ConvertResult{
-		DocumentID: fmt.Sprintf("%s-%d", req.DocumentType, time.Now().Unix()),
+		// DocumentID: fmt.Sprintf("%s-%d", req.DocumentType, time.Now().Unix()),
 		XML:        string(xmlBytes),
-		Hash:       "mocked-hash-123",
+		// Hash:       "mocked-hash-123",
 	}, nil
 }
 

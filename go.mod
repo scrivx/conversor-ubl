@@ -50,4 +50,5 @@ require (
 	golang.org/x/tools v0.34.0 // indirect
 	google.golang.org/protobuf v1.36.6 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
+	software.sslmate.com/src/go-pkcs12 v0.5.0 // indirect
 )

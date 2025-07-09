@@ -25,3 +25,6 @@ go install github.com/swaggo/swag/cmd/swag@latest
 - XSD (para validar XML)
 go get -u github.com/weasel-software/go-xml/cmd/xsdgen
 go install github.com/weasel-software/go-xml/cmd/xsdgen
+
+- PKCS12 (para firmar XML)
+go get -u software.sslmate.com/src/go-pkcs12 
