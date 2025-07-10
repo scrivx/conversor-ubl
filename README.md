@@ -43,7 +43,7 @@ go run main.go
 1. **Instalar Air** (herramienta de desarrollo):
 
    ```bash
-   go install github.com/cosmtrek/air@latest
+   go install github.com/air-verse/air@latest
    ```
 
 2. **Ejecutar con Air**:
