@@ -18,7 +18,7 @@ _Herramienta eficiente para convertir documentos UBL (Universal Business Languag
 ### Clonar el repositorio
 
 ```bash
-git clone https://github.com/yourusername/conversor-ubl.git
+git clone https://github.com/scrivx/conversor-ubl.git
 cd conversor-ubl
 ```
 
@@ -38,9 +38,9 @@ go mod tidy
 go run main.go
 ```
 
-### Para desarrollo con hot reload
+### Para desarrollo con hot reload (opcional)
 
-1. **Instalar Air** (herramienta de hot reload):
+1. **Instalar Air** (herramienta de desarrollo):
 
    ```bash
    go install github.com/cosmtrek/air@latest
@@ -57,6 +57,6 @@ go run main.go
 
 **¿Te gusta el proyecto? ⭐ Dale una estrella en GitHub**
 
-[Reportar Bug](https://github.com/yourusername/conversor-ubl/issues) · [Solicitar Feature](https://github.com/yourusername/conversor-ubl/issues) · [Documentación](https://github.com/yourusername/conversor-ubl/wiki)
+[Reportar Bug](https://github.com/scrivx/conversor-ubl/issues) · [Solicitar Feature](https://github.com/scrivx/conversor-ubl/issues) · [Documentación](https://github.com/scrivx/conversor-ubl/wiki)
 
 </div>
