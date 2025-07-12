@@ -3,7 +3,7 @@
 <div align="center">
 
 [![Go Version](https://img.shields.io/badge/Go-1.24+-00ADD8?style=for-the-badge&logo=go)](https://golang.org/)
-[![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen?style=for-the-badge)](https://github.com/yourusername/conversor-ubl)
+[![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen?style=for-the-badge)](https://github.com/scrivx/conversor-ubl)
 
 **Conversor de facturas UBL a XML**
 
@@ -35,10 +35,10 @@ go mod tidy
 ### Ejecución básica
 
 ```bash
-go run main.go
+go run cmd/api/main.go
 ```
 
-### Para desarrollo con hot reload (opcional)
+### Para desarrollo (dev watch)
 
 1. **Instalar Air** (herramienta de desarrollo):
 
