@@ -17,5 +17,7 @@ func RegisterRoutes(r *gin.Engine) {
 	r.POST("/convert", handlers.ConvertHandler)
 	
 	r.POST("/send", handlers.SendHandler)
+
+	r.POST("/upload", handlers.UploadHandler)
 	
 }
