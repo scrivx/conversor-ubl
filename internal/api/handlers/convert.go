@@ -2,35 +2,41 @@ package handlers
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/scrivx/conversor-ubl/internal/core/services"
 )
 
-var conversor services.Conversor = services.NewMockConversor()
-
-type ConvertRequest struct {
-	DocumentType string                 `json:"document_type" binding:"required"`
-	Data         map[string]interface{} `json:"data" binding:"required"`
-}
-
+// ConvertHandler expone POST /convert
 func ConvertHandler(c *gin.Context) {
 	var req services.ConvertRequest
+
+	// Parsear JSON de entrada
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if req.DocumentType != "Factura" {
-		c.JSON(http.StatusNotImplemented, gin.H{"error": "Tipo de documento no soportado"})
+	// Validar tipo de documento (opcional)
+	if req.DocumentType != "invoice" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "DocumentType debe ser 'invoice'"})
 		return
 	}
 
+	if strings.ToLower(strings.TrimSpace(req.DocumentType)) != "invoice" {
+	c.JSON(http.StatusBadRequest, gin.H{"error": "Tipo de documento no soportado"})
+	return
+}
+	// Ejecutar conversión
 	result, err := services.ConvertInvoice(req)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.Data(http.StatusOK, "application/xml", []byte(result.XML))
+	// Responder con XML generado
+	c.JSON(http.StatusOK, gin.H{
+		"xml": result.XML,
+	})
 }

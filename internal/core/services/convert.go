@@ -1,6 +1,7 @@
 package services
 
 import (
+	"bytes"
 	"encoding/xml"
 	"time"
 
@@ -8,44 +9,19 @@ import (
 	"github.com/scrivx/conversor-ubl/internal/pkg/ubl"
 )
 
-//Variable global
-const dummySignature = `<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
-  <ds:SignedInfo>
-    <ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
-    <ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
-    <ds:Reference URI="">
-      <ds:Transforms>
-        <ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
-      </ds:Transforms>
-      <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
-      <ds:DigestValue>dummyvalue==</ds:DigestValue>
-    </ds:Reference>
-  </ds:SignedInfo>
-  <ds:SignatureValue>ABC123==</ds:SignatureValue>
-</ds:Signature>`
-
-
-
-
-type ConvertResult struct {
-	// DocumentID string `json:"document_id"`
-	XML string `json:"xml"` // base64 o XML plano (por ahora)
-	// Hash       string `json:"hash"` // opcional
-}
-
 type ConvertRequest struct {
 	DocumentType string                 `json:"document_type"`
 	Data         map[string]interface{} `json:"data"`
 }
 
-type Conversor interface {
-	Convert(req ConvertRequest) (*ConvertResult, error)
+type ConvertResult struct {
+	XML string `json:"xml"`
 }
 
 type UBLInvoiceWithExtensions struct {
-	XMLName        xml.Name     `xml:"urn:oasis:names:specification:ubl:schema:xsd:Invoice-2 Invoice"`
+	XMLName        xml.Name      `xml:"urn:oasis:names:specification:ubl:schema:xsd:Invoice-2 Invoice"`
 	Extensions     UBLExtensions `xml:"ext:UBLExtensions"`
-	UBLInvoiceBody ubl.Invoice   `xml:",inline"`
+	UBLInvoiceBody ubl.Invoice   `xml:""`
 }
 
 type UBLExtensions struct {
@@ -57,16 +33,16 @@ type UBLExtension struct {
 }
 
 type ExtensionContent struct {
-	XML string `xml:",innerxml"` // aquí va la firma como string XML crudo
+	XML string `xml:",innerxml"`
 }
 
-
 func ConvertInvoice(req ConvertRequest) (*ConvertResult, error) {
+	// 1️⃣ Construir la estructura UBL base
 	invoice := ubl.Invoice{
 		UBLVersionID:         "2.1",
 		CustomizationID:      "2.0",
 		ID:                   req.Data["id"].(string),
-		IssueDate:            time.Now().Format("2006-01-02T15:04:05"),
+		IssueDate:            time.Now().Format("2006-01-02"),
 		DocumentCurrencyCode: "PEN",
 		AccountingSupplierParty: ubl.SupplierParty{
 			CustomerAssignedAccountID: req.Data["emisor_ruc"].(string),
@@ -115,25 +91,27 @@ func ConvertInvoice(req ConvertRequest) (*ConvertResult, error) {
 		}},
 	}
 
-	// 1. Serializar XML sin firma
-	xmlUnsigned, err := xml.MarshalIndent(invoice, "", "  ")
+	// 2️⃣ Serializar sin firma
+	var buf bytes.Buffer
+	buf.WriteString(xml.Header)
+	xmlEncoder := xml.NewEncoder(&buf)
+	xmlEncoder.Indent("", "  ")
+	if err := xmlEncoder.Encode(invoice); err != nil {
+		return nil, err
+	}
+
+	// 3️⃣ Cargar el .pfx y firmar con xmlsig
+	cert, key, err := signature.LoadKeyPairFromPFX("certificados/C23022479065.pfx", "CRIV123")
 	if err != nil {
 		return nil, err
 	}
 
-	// 2. Cargar PFX
-	cert, key, err := signature.LoadKeyPairFromPFX("certificados/C23022479065.pfx", "Ch14pp32023")
+	signedXML, err := signature.SignXML(buf.String(), cert, key)
 	if err != nil {
 		return nil, err
 	}
 
-	// 3. Firmar
-	signedXML, err := signature.SignXML(string(xmlUnsigned), cert, key)
-	if err != nil {
-		return nil, err
-	}
-
-	// 4. Insertar firma en UBLExtensions
+	// 4️⃣ Insertar firma en UBLExtensions
 	wrapped := UBLInvoiceWithExtensions{
 		Extensions: UBLExtensions{
 			Extension: []UBLExtension{
@@ -147,12 +125,14 @@ func ConvertInvoice(req ConvertRequest) (*ConvertResult, error) {
 		UBLInvoiceBody: invoice,
 	}
 
-	// 5. Serializar completo
-	finalXML, err := xml.MarshalIndent(wrapped, "", "  ")
-	if err != nil {
+	// 5️⃣ Serializar final
+	var out bytes.Buffer
+	out.WriteString(xml.Header)
+	encoder := xml.NewEncoder(&out)
+	encoder.Indent("", "  ")
+	if err := encoder.Encode(wrapped); err != nil {
 		return nil, err
 	}
 
-	return &ConvertResult{XML: xml.Header + string(finalXML)}, nil
+	return &ConvertResult{XML: out.String()}, nil
 }
-

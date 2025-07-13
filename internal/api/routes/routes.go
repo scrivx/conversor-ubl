@@ -6,12 +6,16 @@ import (
 )
 
 func RegisterRoutes(r *gin.Engine) {
+	
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{"message": "Conversor UBL API v1"})
 	})
+
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{"message": "pong"})
 	})
 	r.POST("/convert", handlers.ConvertHandler)
+	
+	r.POST("/send", handlers.SendHandler)
 	
 }
