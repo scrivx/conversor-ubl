@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/tiaguinho/gosoap"
 )
@@ -26,7 +27,12 @@ type SendResponse struct {
 
 // Envía el ZIP con sendBill (Factura, Boleta)
 func SendBill(cfg SUNATConfig, fileName string, zipContent []byte) (*SendResponse, error) {
-	soapClient, err := gosoap.SoapClient(cfg.Endpoint, &http.Client{})
+	// Configurar cliente HTTP con timeout
+	client := &http.Client{
+		Timeout: 30 * time.Second,
+	}
+	
+	soapClient, err := gosoap.SoapClient(cfg.Endpoint, client)
 	if err != nil {
 		return nil, fmt.Errorf("error creando cliente SOAP: %w", err)
 	}
@@ -43,7 +49,16 @@ func SendBill(cfg SUNATConfig, fileName string, zipContent []byte) (*SendRespons
 	// Ejecutar sendBill
 	res, err := soapClient.Call("sendBill", params)
 	if err != nil {
-		return nil, fmt.Errorf("error invocando sendBill: %w", err)
+		// Si el método no existe, intentar con el namespace completo
+		if err.Error() == "method or namespace is empty" {
+			// Intentar con el namespace completo de SUNAT
+			res, err = soapClient.Call("urn:service.sunat.gob.pe:billService:sendBill", params)
+			if err != nil {
+				return nil, fmt.Errorf("error invocando sendBill con namespace: %w", err)
+			}
+		} else {
+			return nil, fmt.Errorf("error invocando sendBill: %w", err)
+		}
 	}
 
 	// SUNAT devuelve el CDR como Base64 en el body de la respuesta
@@ -108,6 +123,46 @@ func GetStatus(cfg SUNATConfig, ticket string) (*SendResponse, error) {
 		Success: true,
 		CDR:     cdr,
 		Message: "CDR recuperado con éxito",
+	}, nil
+}
+
+// Verifica la conectividad con el servicio SUNAT
+func CheckSUNATConnectivity(cfg SUNATConfig) error {
+	client := &http.Client{
+		Timeout: 10 * time.Second,
+	}
+	
+	// Intentar obtener el WSDL
+	resp, err := client.Get(cfg.Endpoint)
+	if err != nil {
+		return fmt.Errorf("error conectando a SUNAT: %w", err)
+	}
+	defer resp.Body.Close()
+	
+	if resp.StatusCode != http.StatusOK {
+		return fmt.Errorf("servicio SUNAT no disponible, status: %d", resp.StatusCode)
+	}
+	
+	return nil
+}
+
+// ListAvailableMethods lista los métodos disponibles en el WSDL
+func ListAvailableMethods(cfg SUNATConfig) ([]string, error) {
+	// Por ahora, retornar métodos conocidos de SUNAT
+	return []string{
+		"sendBill",
+		"sendSummary", 
+		"getStatus",
+	}, nil
+}
+
+// SendBillMock simula el envío para desarrollo
+func SendBillMock(cfg SUNATConfig, fileName string, zipContent []byte) (*SendResponse, error) {
+	// Simular respuesta exitosa para desarrollo
+	return &SendResponse{
+		Success: true,
+		CDR:     "mock-cdr-base64-data",
+		Message: "Factura enviada exitosamente (MODO PRUEBA)",
 	}, nil
 }
 
