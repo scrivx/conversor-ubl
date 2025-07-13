@@ -18,16 +18,11 @@ func ConvertHandler(c *gin.Context) {
 		return
 	}
 
-	// Validar tipo de documento (opcional)
-	if req.DocumentType != "invoice" {
+	// Validar tipo de documento
+	if strings.ToLower(strings.TrimSpace(req.DocumentType)) != "invoice" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "DocumentType debe ser 'invoice'"})
 		return
 	}
-
-	if strings.ToLower(strings.TrimSpace(req.DocumentType)) != "invoice" {
-	c.JSON(http.StatusBadRequest, gin.H{"error": "Tipo de documento no soportado"})
-	return
-}
 	// Ejecutar conversión
 	result, err := services.ConvertInvoice(req)
 	if err != nil {

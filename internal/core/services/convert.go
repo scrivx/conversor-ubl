@@ -3,6 +3,7 @@ package services
 import (
 	"bytes"
 	"encoding/xml"
+	"fmt"
 	"time"
 
 	"github.com/scrivx/conversor-ubl/internal/pkg/signature"
@@ -37,35 +38,76 @@ type ExtensionContent struct {
 }
 
 func ConvertInvoice(req ConvertRequest) (*ConvertResult, error) {
+	// Validar campos requeridos
+	if req.Data["id"] == nil || req.Data["emisor_ruc"] == nil || req.Data["emisor_nombre"] == nil ||
+		req.Data["emisor_razon"] == nil || req.Data["cliente_ruc"] == nil || req.Data["cliente_razon"] == nil ||
+		req.Data["item_nombre"] == nil || req.Data["total"] == nil {
+		return nil, fmt.Errorf("todos los campos son requeridos")
+	}
+
+	// Validar tipos de datos
+	id, ok := req.Data["id"].(string)
+	if !ok {
+		return nil, fmt.Errorf("campo 'id' debe ser string")
+	}
+	emisorRuc, ok := req.Data["emisor_ruc"].(string)
+	if !ok {
+		return nil, fmt.Errorf("campo 'emisor_ruc' debe ser string")
+	}
+	emisorNombre, ok := req.Data["emisor_nombre"].(string)
+	if !ok {
+		return nil, fmt.Errorf("campo 'emisor_nombre' debe ser string")
+	}
+	emisorRazon, ok := req.Data["emisor_razon"].(string)
+	if !ok {
+		return nil, fmt.Errorf("campo 'emisor_razon' debe ser string")
+	}
+	clienteRuc, ok := req.Data["cliente_ruc"].(string)
+	if !ok {
+		return nil, fmt.Errorf("campo 'cliente_ruc' debe ser string")
+	}
+	clienteRazon, ok := req.Data["cliente_razon"].(string)
+	if !ok {
+		return nil, fmt.Errorf("campo 'cliente_razon' debe ser string")
+	}
+	itemNombre, ok := req.Data["item_nombre"].(string)
+	if !ok {
+		return nil, fmt.Errorf("campo 'item_nombre' debe ser string")
+	}
+	total, ok := req.Data["total"].(float64)
+	if !ok {
+		return nil, fmt.Errorf("campo 'total' debe ser número")
+	}
+
 	// 1️⃣ Construir la estructura UBL base
 	invoice := ubl.Invoice{
 		UBLVersionID:         "2.1",
 		CustomizationID:      "2.0",
-		ID:                   req.Data["id"].(string),
+		ID:                   id,
 		IssueDate:            time.Now().Format("2006-01-02"),
 		DocumentCurrencyCode: "PEN",
 		AccountingSupplierParty: ubl.SupplierParty{
-			CustomerAssignedAccountID: req.Data["emisor_ruc"].(string),
+			CustomerAssignedAccountID: emisorRuc,
 			Party: ubl.Party{
-				PartyName: []ubl.PartyName{{Name: req.Data["emisor_nombre"].(string)}},
+				PartyName: []ubl.PartyName{{Name: emisorNombre}},
 				PartyLegalEntity: []ubl.PartyLegalEntity{{
-					RegistrationName: req.Data["emisor_razon"].(string),
-					CompanyID:        req.Data["emisor_ruc"].(string),
+					RegistrationName: emisorRazon,
+					CompanyID:        emisorRuc,
 				}},
 			},
 		},
 		AccountingCustomerParty: ubl.CustomerParty{
-			CustomerAssignedAccountID: req.Data["cliente_ruc"].(string),
+			CustomerAssignedAccountID: clienteRuc,
 			Party: ubl.Party{
 				PartyLegalEntity: []ubl.PartyLegalEntity{{
-					RegistrationName: req.Data["cliente_razon"].(string),
-					CompanyID:        req.Data["cliente_ruc"].(string),
+					RegistrationName: clienteRazon,
+					CompanyID:        clienteRuc,
 				}},
 			},
 		},
 		LegalMonetaryTotal: ubl.LegalMonetaryTotal{
 			PayableAmount: ubl.MonetaryAmount{
-				Value:      req.Data["total"].(float64),
+				Value:      total,
 				CurrencyID: "PEN",
 			},
 		},
@@ -76,15 +118,15 @@ func ConvertInvoice(req ConvertRequest) (*ConvertResult, error) {
 				UnitCode: "NIU",
 			},
 			LineExtensionAmount: ubl.MonetaryAmount{
-				Value:      req.Data["total"].(float64),
+				Value:      total,
 				CurrencyID: "PEN",
 			},
 			Item: ubl.Item{
-				Name: req.Data["item_nombre"].(string),
+				Name: itemNombre,
 			},
 			Price: ubl.Price{
 				PriceAmount: ubl.MonetaryAmount{
-					Value:      req.Data["total"].(float64),
+					Value:      total,
 					CurrencyID: "PEN",
 				},
 			},

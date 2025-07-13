@@ -29,8 +29,8 @@ func PrepareAndValidate(xmlContent, invoiceID string) (*SendResult, error) {
 		return nil, fmt.Errorf("error guardando XML: %v", err)
 	}
 
-	// Validar contra XSD
-	if err := validation.ValidateXMLAgainstXSD(xmlPath, xsdPath); err != nil {
+	// Validar contra XSD con fallback
+	if err := validation.ValidateXMLAgainstXSDWithFallback(xmlPath, xsdPath); err != nil {
 		return nil, fmt.Errorf("XML inválido: %v", err)
 	}
 
