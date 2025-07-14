@@ -46,7 +46,8 @@ curl -X POST http://localhost:8080/convert `
     "cliente_ruc": "20654321098",
     "cliente_razon": "Cliente SAC",
     "item_nombre": "Muestra Gratis",
-    "gratuita": 80.00
+    "gratuita": 80.00,
+    "total": 100.00
   }
 }'
 
@@ -64,7 +65,8 @@ curl -X POST http://localhost:8080/convert `
     "cliente_razon": "Cliente SAC",
     "item_nombre": "Producto Bonificado",
     "venta_gravada": 200.00,
-    "bonificacion": 20.00
+    "bonificacion": 20.00,
+    "total": 220.00
   }
 }'
 
@@ -82,7 +84,8 @@ curl -X POST http://localhost:8080/convert `
     "cliente_razon": "Cliente SAC",
     "item_nombre": "Bienes con Percepción",
     "venta_gravada": 300.00,
-    "percepcion": 15.00
+    "percepcion": 15.00,
+    "total": 325.00
   }
 }'
 
@@ -102,5 +105,6 @@ curl -X POST http://localhost:8080/convert `
     "venta_gravada": 500.00,
     "credito": true,
     "plazo": "30 días"
+    "total": 500.00
   }
 }'
