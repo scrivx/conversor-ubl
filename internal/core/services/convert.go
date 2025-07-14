@@ -20,10 +20,11 @@ type ConvertResult struct {
 }
 
 type UBLInvoiceWithExtensions struct {
-	XMLName        xml.Name      `xml:"urn:oasis:names:specification:ubl:schema:xsd:Invoice-2 Invoice"`
-	Extensions     UBLExtensions `xml:"ext:UBLExtensions"`
-	UBLInvoiceBody ubl.Invoice   `xml:""`
+	XMLName    xml.Name      `xml:"urn:oasis:names:specification:ubl:schema:xsd:Invoice-2 Invoice"`
+	Extensions UBLExtensions `xml:"ext:UBLExtensions"`
+	ubl.Invoice `xml:",inline"`
 }
+
 
 type UBLExtensions struct {
 	Extension []UBLExtension `xml:"ext:UBLExtension"`
@@ -165,7 +166,7 @@ func ConvertInvoice(req ConvertRequest) (*ConvertResult, error) {
 				},
 			},
 		},
-		UBLInvoiceBody: invoice,
+		Invoice: invoice,
 	}
 
 	// 5️⃣ Serializar final

@@ -1,12 +1,8 @@
 package ubl
 
-import (
-	"encoding/xml"
-)
-
 // Invoice represents the root UBL Invoice element
 type Invoice struct {
-	XMLName                xml.Name                `xml:"urn:oasis:names:specification:ubl:schema:xsd:Invoice-2 Invoice"`
+	// XMLName                xml.Name                `xml:"urn:oasis:names:specification:ubl:schema:xsd:Invoice-2 Invoice"` // Eliminado para evitar duplicidad
 	UBLVersionID           string                  `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 UBLVersionID,omitempty"`
 	CustomizationID        string                  `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 CustomizationID,omitempty"`
 	ProfileID              string                  `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 ProfileID,omitempty"`
