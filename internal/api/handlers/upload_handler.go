@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/base64"
+	"fmt"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -32,30 +33,12 @@ func UploadHandler(c *gin.Context) {
 	}
 
 	cfg := soap.SUNATConfig{
-		RUC:      "20123456789",                  // <- Tu RUC
-		Usuario:  "MODDATOS",                     // Usuario Secundario DEMO
-		Clave:    "moddatos",                     // Clave DEMO
+		RUC:      "20123456789",
+		Usuario:  "MODDATOS",
+		Clave:    "moddatos",
 		Endpoint: "https://e-beta.sunat.gob.pe/ol-ti-itcpfegem-beta/billService?wsdl",
 	}
 
-	// Para desarrollo, usar modo de prueba por defecto
-	// En producción, descomentar las líneas siguientes para usar el servicio real
-	/*
-	if err := soap.CheckSUNATConnectivity(cfg); err != nil {
-		// Si el servicio real no está disponible, usar modo de prueba
-		fmt.Printf("Servicio SUNAT no disponible, usando modo de prueba: %v\n", err)
-		res, err := soap.SendBillMock(cfg, req.InvoiceID+".zip", zipData)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-		c.JSON(http.StatusOK, res)
-		return
-	}
-
-	res, err := soap.SendBill(cfg, req.InvoiceID+".zip", zipData)
-	*/
-	
 	// Usar modo de prueba para desarrollo
 	res, err := soap.SendBillMock(cfg, req.InvoiceID+".zip", zipData)
 	if err != nil {
@@ -63,15 +46,41 @@ func UploadHandler(c *gin.Context) {
 		return
 	}
 
-	// Si viene un CDR, guárdalo
+	// Si viene un CDR, guárdalo correctamente
 	if res.CDR != "" {
-		cdrPath := filepath.Join("temp", req.InvoiceID+"_CDR.zip")
-		cdrData, _ := os.Create(cdrPath)
-		defer cdrData.Close()
-
-		decoded, _ := base64.StdEncoding.DecodeString(res.CDR)
-		cdrData.Write(decoded)
+		if err := saveCDR(req.InvoiceID, res.CDR); err != nil {
+			fmt.Printf("Error guardando CDR: %v\n", err)
+			// No fallar la respuesta por esto, solo log el error
+		}
 	}
 
 	c.JSON(http.StatusOK, res)
+}
+
+// saveCDR guarda el CDR decodificado correctamente
+func saveCDR(invoiceID, cdrBase64 string) error {
+	// Validar que el CDR no esté vacío
+	if cdrBase64 == "" {
+		return fmt.Errorf("CDR vacío")
+	}
+
+	// Decodificar el Base64
+	decoded, err := base64.StdEncoding.DecodeString(cdrBase64)
+	if err != nil {
+		return fmt.Errorf("error decodificando CDR: %w", err)
+	}
+
+	// Crear el directorio temp si no existe
+	if err := os.MkdirAll("temp", 0755); err != nil {
+		return fmt.Errorf("error creando directorio temp: %w", err)
+	}
+
+	// Crear el archivo CDR
+	cdrPath := filepath.Join("temp", invoiceID+"_CDR.zip")
+	if err := os.WriteFile(cdrPath, decoded, 0644); err != nil {
+		return fmt.Errorf("error escribiendo archivo CDR: %w", err)
+	}
+
+	fmt.Printf("CDR guardado exitosamente en: %s\n", cdrPath)
+	return nil
 }
