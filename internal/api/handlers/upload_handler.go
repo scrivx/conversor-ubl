@@ -13,6 +13,7 @@ import (
 
 type UploadRequest struct {
 	InvoiceID string `json:"invoice_id"`
+	FileName  string `json:"file_name"` // Nuevo campo con el nombre del archivo generado
 }
 
 // POST /upload
@@ -24,7 +25,13 @@ func UploadHandler(c *gin.Context) {
 		return
 	}
 
-	zipPath := filepath.Join("temp", req.InvoiceID+".zip")
+	// Usar el nuevo nombre del archivo si está disponible, sino usar el invoiceID
+	fileName := req.FileName
+	if fileName == "" {
+		fileName = req.InvoiceID
+	}
+
+	zipPath := filepath.Join("temp", fileName+".zip")
 
 	zipData, err := os.ReadFile(zipPath)
 	if err != nil {
@@ -45,7 +52,7 @@ func UploadHandler(c *gin.Context) {
 	if err := soap.CheckSUNATConnectivity(cfg); err != nil {
 		// Si el servicio real no está disponible, usar modo de prueba
 		fmt.Printf("Servicio SUNAT no disponible, usando modo de prueba: %v\n", err)
-		res, err := soap.SendBillMock(cfg, req.InvoiceID+".zip", zipData)
+		res, err := soap.SendBillMock(cfg, fileName+".zip", zipData)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 			return
@@ -54,13 +61,13 @@ func UploadHandler(c *gin.Context) {
 		return
 	}
 
-	res, err := soap.SendBill(cfg, req.InvoiceID+".zip", zipData)
+	res, err := soap.SendBill(cfg, fileName+".zip", zipData)
 	*/
 
 
 
 	// Usar modo de prueba para desarrollo
-	res, err := soap.SendBillMock(cfg, req.InvoiceID+".zip", zipData)
+	res, err := soap.SendBillMock(cfg, fileName+".zip", zipData)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -68,7 +75,7 @@ func UploadHandler(c *gin.Context) {
 
 	// Si viene un CDR, guárdalo correctamente
 	if res.CDR != "" {
-		if err := saveCDR(req.InvoiceID, res.CDR); err != nil {
+		if err := saveCDR(fileName, res.CDR); err != nil {
 			fmt.Printf("Error guardando CDR: %v\n", err)
 			// No fallar la respuesta por esto, solo log el error
 		}
