@@ -148,7 +148,8 @@ func ConvertInvoice(req ConvertRequest) (*ConvertResult, error) {
 		return nil, err
 	}
 
-	signedXML, err := signature.SignXML(buf.String(), cert, key)
+	// Usar la nueva función que genera la firma como elemento estructurado
+	signatureElement, err := signature.SignXMLAsElement(buf.String(), cert, key)
 	if err != nil {
 		return nil, err
 	}
@@ -159,7 +160,7 @@ func ConvertInvoice(req ConvertRequest) (*ConvertResult, error) {
 			Extension: []UBLExtension{
 				{
 					ExtensionContent: ExtensionContent{
-						XML: signedXML,
+						XML: signatureElement,
 					},
 				},
 			},

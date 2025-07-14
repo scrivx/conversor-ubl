@@ -5,6 +5,7 @@ go 1.24.4
 require (
 	github.com/amdonov/xmlsig v0.1.0
 	github.com/gin-gonic/gin v1.10.1
+	github.com/tiaguinho/gosoap v1.4.4
 	software.sslmate.com/src/go-pkcs12 v0.5.0
 )
 
@@ -26,7 +27,6 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.4 // indirect
-	github.com/tiaguinho/gosoap v1.4.4 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.3.0 // indirect
 	golang.org/x/arch v0.18.0 // indirect

@@ -31,9 +31,17 @@ type Invoice struct {
 	TaxTotal               []TaxTotal              `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 TaxTotal,omitempty"`
 	LegalMonetaryTotal     LegalMonetaryTotal      `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 LegalMonetaryTotal"`
 	InvoiceLines           []InvoiceLine           `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 InvoiceLine"`
+	AllowanceCharge []AllowanceCharge `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2 AllowanceCharge,omitempty"`
+
 }
 
 
+// AllowanceCharge represents a discount or surcharge
+type AllowanceCharge struct {
+	ChargeIndicator           bool           `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 ChargeIndicator"`
+	AllowanceChargeReasonCode string         `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 AllowanceChargeReasonCode,omitempty"`
+	Amount                    MonetaryAmount `xml:"urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2 Amount"`
+}
 
 
 // SupplierParty represents the supplier party information
