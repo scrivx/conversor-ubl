@@ -18,6 +18,6 @@ func RegisterRoutes(r *gin.Engine) {
 	
 	r.POST("/send", handlers.SendHandler)
 
-	r.POST("/upload", handlers.UploadHandler)
+	r.POST("/load", handlers.UploadHandler)
 	
 }
