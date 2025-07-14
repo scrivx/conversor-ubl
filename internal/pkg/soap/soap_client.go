@@ -187,12 +187,5 @@ func SendBillMock(cfg SUNATConfig, fileName string, zipContent []byte) (*SendRes
 
 // createMockCDRZip crea un ZIP válido con el contenido del CDR
 func createMockCDRZip(xmlContent string) []byte {
-	// Aquí puedes usar el paquete ziputil que ya tienes
-	// o crear un ZIP en memoria
-	
-	// Por simplicidad, retornar un ZIP básico válido
-	// En un caso real, deberías usar archive/zip para crear un ZIP válido
-	
-	// Este es un ejemplo básico - deberías implementar la creación del ZIP
 	return []byte(xmlContent) // Temporal - reemplazar con ZIP real
 }
