@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApplicationResponse xmlns="urn:oasis:names:specification:ubl:schema:xsd:ApplicationResponse-2">
+    <UBLVersionID>2.1</UBLVersionID>
+    <CustomizationID>2.0</CustomizationID>
+    <DocumentResponse>
+        <Response>
+            <ResponseCode>0</ResponseCode>
+            <Description>La Factura numero F001-00000001, ha sido aceptada</Description>
+        </Response>
+    </DocumentResponse>
+</ApplicationResponse>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2">
+  <ext:UBLExtensions>
+    <ext:UBLExtension>
+      <ext:ExtensionContent><ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+  <ds:SignedInfo>
+    <ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+    <ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+    <ds:Reference URI="">
+      <ds:Transforms>
+        <ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+      </ds:Transforms>
+      <ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+      <ds:DigestValue>q5Rak/Z0TYFfjmbQgW2tDBVBMXJ5uaOBb2P2BO9Ezks1uTiNgkTAkaMadJEqqwbTtopzVFLhVE1UWcLYqtYYZCfTs32uw90FS6WdP1uRQsfwEkC1TIV+F4ZPmf0z8r/9B0UDK3NetKqgsSHFpsbAKXP/tHOrDdmMw70NaDmdJxmb3JhotVxgf8HN4KYhl/i7tqDaHbqBgfjBR2D+7+QkMlAtBq2bbPYjKs44XLGc8sannPZuj7fqX+7t2V0Ds200mhiPBtaU+4I8AviezvnfVJdVo6anTrzWtkpaG98vuqADM67nliLTlUI011uyOLYsuhpwDYhKD9X834FqQc1POg==</ds:DigestValue>
+    </ds:Reference>
+  </ds:SignedInfo>
+  <ds:SignatureValue>q5Rak/Z0TYFfjmbQgW2tDBVBMXJ5uaOBb2P2BO9Ezks1uTiNgkTAkaMadJEqqwbTtopzVFLhVE1UWcLYqtYYZCfTs32uw90FS6WdP1uRQsfwEkC1TIV+F4ZPmf0z8r/9B0UDK3NetKqgsSHFpsbAKXP/tHOrDdmMw70NaDmdJxmb3JhotVxgf8HN4KYhl/i7tqDaHbqBgfjBR2D+7+QkMlAtBq2bbPYjKs44XLGc8sannPZuj7fqX+7t2V0Ds200mhiPBtaU+4I8AviezvnfVJdVo6anTrzWtkpaG98vuqADM67nliLTlUI011uyOLYsuhpwDYhKD9X834FqQc1POg==</ds:SignatureValue>
+  <ds:KeyInfo>
+    <ds:X509Data>
+      <ds:X509Certificate>-----BEGIN CERTIFICATE-----
+MIIDrzCCApegAwIBAgIUHzpYGVv+0ASOZMm6aRxLi2CAID8wDQYJKoZIhvcNAQEL
+BQAwZzELMAkGA1UEBhMCUEUxETAPBgNVBAgMCENISUNMQVlPMREwDwYDVQQHDAhD
+SElDTEFZTzEUMBIGA1UECgwLVUJMLUlOVk9JQ0UxDTALBgNVBAsMBENSSVYxDTAL
+BgNVBAMMBENSSVYwHhcNMjUwNzEzMDU0MTE5WhcNMjYwNzEzMDU0MTE5WjBnMQsw
+CQYDVQQGEwJQRTERMA8GA1UECAwIQ0hJQ0xBWU8xETAPBgNVBAcMCENISUNMQVlP
+MRQwEgYDVQQKDAtVQkwtSU5WT0lDRTENMAsGA1UECwwEQ1JJVjENMAsGA1UEAwwE
+Q1JJVjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANEsukjGOIghP91Y
+n/kx29Bcsiw6vQATBWDczy25ugeLGFEiRJnLcbVOiB12YDt0COsTbzisKMClIGQb
+npe9F45x6oO+IoR02le+jbg63NsCDNvhDWBLwT74IpFU//qsE6ikBOyyB8zrR2E3
+WhdOhU0xuXonItFTbb45jXNFKxN6L+vPqelzkJytKrba/pw9nfifuD3aSNTHfWTy
+jLnIYSdaLrLmqaxBKpwDGmWjxtOjH7PuCQ+U+X9FRn/Pi6XjznUlPp+VsfvxbskL
+bC6ZyJm+uKEgpeU4/IPV4Wuf/jOU6RMWowe6egR9wQoZqIqtX+tbQgCQ1heWxVfp
+ThVuIEcCAwEAAaNTMFEwHQYDVR0OBBYEFAY0/pmdtw5SJ162mSyWWIky9dhRMB8G
+A1UdIwQYMBaAFAY0/pmdtw5SJ162mSyWWIky9dhRMA8GA1UdEwEB/wQFMAMBAf8w
+DQYJKoZIhvcNAQELBQADggEBAJpg5uaeAEhP/Hrzi7DSxJpUIuqwnGaufQDHlcEf
+4+XYeJ/5RB1Pg3MqnRL8qFtG9YEZN+z6vb7DMAyCg5rziebnX9m21/2sUGf4lNGr
+l9KrBTIFmf9masvBobBkLqRxn/n0Ls4XyCi4l1Qd0AeUiQg9T5kY/oq57AjTU9SL
+vGMCDmq+99Ao0WZMEW0PomPO0NitF7kfLyULpTCuziHtPIEwqObOpAbo6Trh7t4G
+Ie71bFnkBhghDW1n8UYMgnMep+TQn3C/mddXF6+G3xcLsBQGImKDwFFYReRMAD6K
+urSlqXLhYDH8nhHqxVLkiVhTZ4/RJMPvpWoKnwBNAYgKo9Q=
+-----END CERTIFICATE-----</ds:X509Certificate>
+    </ds:X509Data>
+  </ds:KeyInfo>
+</ds:Signature></ext:ExtensionContent>
+    </ext:UBLExtension>
+  </ext:UBLExtensions>
+  <cac:Signature>
+    <cbc:ID>Signature123</cbc:ID>
+    <cac:SignatoryParty>
+      <cac:PartyIdentification>
+        <cbc:ID>20123456789</cbc:ID>
+      </cac:PartyIdentification>
+      <cac:PartyName>
+        <cbc:Name>Empresa SAC</cbc:Name>
+      </cac:PartyName>
+    </cac:SignatoryParty>
+    <cac:DigitalSignatureAttachment>
+      <cac:ExternalReference>
+        <cbc:URI>#Signature123</cbc:URI>
+      </cac:ExternalReference>
+    </cac:DigitalSignatureAttachment>
+  </cac:Signature>
+  <cbc:UBLVersionID>2.1</cbc:UBLVersionID>
+  <cbc:CustomizationID>2.0</cbc:CustomizationID>
+  <cbc:ID>F001-201</cbc:ID>
+  <cbc:IssueDate>2025-07-14</cbc:IssueDate>
+  <cbc:InvoiceTypeCode xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">01</cbc:InvoiceTypeCode>
+  <cbc:DocumentCurrencyCode>PEN</cbc:DocumentCurrencyCode>
+  <cac:AccountingSupplierParty>
+    <CustomerAssignedAccountID>20123456789</CustomerAssignedAccountID>
+    <Party>
+      <cac:PartyName>
+        <cbc:Name>Empresa SAC</cbc:Name>
+      </cac:PartyName>
+      <cac:PartyLegalEntity>
+        <RegistrationName>Empresa S.A.C.</RegistrationName>
+        <CompanyID>20123456789</CompanyID>
+      </cac:PartyLegalEntity>
+    </Party>
+  </cac:AccountingSupplierParty>
+  <cac:AccountingCustomerParty>
+    <CustomerAssignedAccountID>20654321098</CustomerAssignedAccountID>
+    <Party>
+      <cac:PartyLegalEntity>
+        <RegistrationName>Cliente SAC</RegistrationName>
+        <CompanyID>20654321098</CompanyID>
+      </cac:PartyLegalEntity>
+    </Party>
+  </cac:AccountingCustomerParty>
+  <cac:TaxTotal>
+    <cbc:TaxAmount currencyID="PEN">0</cbc:TaxAmount>
+    <cac:TaxSubtotal>
+      <cbc:TaxableAmount currencyID="PEN">0</cbc:TaxableAmount>
+      <cbc:TaxAmount currencyID="PEN">0</cbc:TaxAmount>
+      <cac:TaxCategory>
+        <cbc:ID>S</cbc:ID>
+        <cbc:Name>EXO</cbc:Name>
+        <cbc:TaxExemptionReasonCode>20</cbc:TaxExemptionReasonCode>
+        <cac:TaxScheme>
+          <cbc:ID>1000</cbc:ID>
+          <cbc:Name>IGV</cbc:Name>
+        </cac:TaxScheme>
+      </cac:TaxCategory>
+    </cac:TaxSubtotal>
+  </cac:TaxTotal>
+  <cac:LegalMonetaryTotal>
+    <cbc:LineExtensionAmount currencyID="PEN">100</cbc:LineExtensionAmount>
+    <cbc:TaxExclusiveAmount>0</cbc:TaxExclusiveAmount>
+    <cbc:TaxInclusiveAmount currencyID="PEN">100</cbc:TaxInclusiveAmount>
+    <cbc:AllowanceTotalAmount>0</cbc:AllowanceTotalAmount>
+    <cbc:ChargeTotalAmount>0</cbc:ChargeTotalAmount>
+    <cbc:PrepaidAmount>0</cbc:PrepaidAmount>
+    <cbc:PayableRoundingAmount>0</cbc:PayableRoundingAmount>
+    <cbc:PayableAmount currencyID="PEN">100</cbc:PayableAmount>
+  </cac:LegalMonetaryTotal>
+  <cac:InvoiceLine xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+    <cbc:ID>1</cbc:ID>
+    <cbc:InvoicedQuantity xmlns="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" unitCode="NIU">1</cbc:InvoicedQuantity>
+    <cbc:LineExtensionAmount currencyID="PEN">100</cbc:LineExtensionAmount>
+    <cac:Item>
+      <cbc:Description>Producto de prueba</cbc:Description>
+      <cbc:Name>Muestra Gratis</cbc:Name>
+    </cac:Item>
+    <cac:Price>
+      <cbc:PriceAmount currencyID="PEN">100</cbc:PriceAmount>
+      <cbc:BaseQuantity>0</cbc:BaseQuantity>
+    </cac:Price>
+  </cac:InvoiceLine>
+</Invoice>
